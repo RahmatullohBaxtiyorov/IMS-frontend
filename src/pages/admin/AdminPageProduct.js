@@ -1,11 +1,70 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
-import {AuthStr} from "../exported/Utils";
+import {AuthStr} from "../../exported/Utils";
 
-const AdminPage = () => {
+const AdminPageProduct = () => {
     const [currencies, setCurrencies] = useState([]);
     const [measurements, setMeasurements] = useState([]);
     const [categories, setCategories] = useState([]);
+
+    const [currencyName, setCurrencyName] = useState('');
+    const [measurementName, setMeasurementName] = useState('');
+    const [supplierName, setSupplierName] = useState('');
+    const [supplierPhone, setSupplierPhone] = useState('');
+    const [categoryName, setCategoryName] = useState('');
+    const [parentCategoryId, setParentCategoryId] = useState('');
+    const [productName, setProductName] = useState('');
+    const [productCurrency, setProductCurrency] = useState('uzs');
+    const [productMeasurement, setProductMeasurement] = useState('kilo');
+    const [productParentCategoryId, setProductParentCategoryId] = useState('');
+    const [productChildCategoryId, setProductChildCategoryId] = useState('');
+    const [photoFile, setPhotoFile] = useState(null);
+
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        // Update the corresponding state based on the input name
+        switch (name) {
+            case 'currencyName':
+                setCurrencyName(value);
+                break;
+            case 'measurementName':
+                setMeasurementName(value);
+                break;
+            case 'supplierName':
+                setSupplierName(value);
+                break;
+            case 'supplierPhone':
+                setSupplierPhone(value);
+                break;
+            case 'categoryName':
+                setCategoryName(value);
+                break;
+            case 'parentCategoryId':
+                setParentCategoryId(value);
+                break;
+            case 'productName':
+                setProductName(value);
+                break;
+            case 'productCurrency':
+                setProductCurrency(value);
+                break;
+            case 'productMeasurement':
+                setProductMeasurement(value);
+                break;
+            case 'productParentCategoryId':
+                setProductParentCategoryId(value);
+                break;
+            case 'productChildCategoryId':
+                setProductChildCategoryId(value);
+                break;
+            case 'photoFile':
+                setPhotoFile(event.target.files[0]);
+                break;
+            default:
+            // Handle unexpected input names
+        }
+    };
+
 
     useEffect(() => {
         axios.get("http://localhost:8080/api/admin/currency", {headers: {"Authorization": AuthStr}}).then(res => {
@@ -74,7 +133,6 @@ const AdminPage = () => {
                             <option id={value.id} key={index}>{value.name}</option>
                         ))}
                     </select>
-                    {/*<input type="file"/>*/}
                     <select name="measurement" defaultValue={"kilo"}>
                         {measurements.map((value, index, array) => (
                             <option id={value.id} key={index}>{value.name}</option>
@@ -97,16 +155,11 @@ const AdminPage = () => {
                             ))}
                     </select>
 
-                    <input type="text"/>
                     <button>Ok</button>
                 </div>
                 <div className={"container"}>
-                    <input type="text"/>
-                    <input type="text"/>
-                    <input type="text"/>
-                    <input type="text"/>
-                    <input type="text"/>
-                    <input type="text"/>
+                    <h3>Photo upload</h3>
+                    <input type="file" accept={".jpg"}/>
                     <button>Ok</button>
                 </div>
 
@@ -116,4 +169,4 @@ const AdminPage = () => {
     );
 };
 
-export default AdminPage;
+export default AdminPageProduct;

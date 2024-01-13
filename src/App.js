@@ -3,7 +3,8 @@ import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import Register from "./components/Register";
 import HomePage from "./pages/HomePage";
 import {createContext, useEffect, useState} from "react";
-import AdminPage from "./pages/AdminPage";
+import AdminPageProduct from "./pages/admin/AdminPageProduct";
+import AdminPP from "./pages/admin/AdminPP";
 
 export const GlobalVariableContext = createContext(null);
 
@@ -24,7 +25,7 @@ function App() {
                     <Route exact path='/' element={<LogIn/>}/>
                     <Route path='/register' element={<Register/>}/>
                     <Route path='/home' element={<HomePage/>}/>
-                    <Route path='/admin' element={<AdminPage/>}/>
+                    <Route path='/admin' element={<AdminPP/>}/>
                 </Routes>
 
             </Router>
