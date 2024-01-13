@@ -4,3 +4,19 @@
     align-items: center;
     justify-content: center;
 }
+
+.forms {
+    width: 80vw;
+    margin: 10vh auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+button {
+    margin: 10px;
+}
+
+input, select {
+    margin: 2px;
+}

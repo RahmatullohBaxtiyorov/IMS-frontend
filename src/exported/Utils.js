@@ -1,3 +1,4 @@
+export const AuthStr = 'Bearer '.concat(localStorage.getItem("TOKEN"));
 export class Utils {
      #Token = "";
 

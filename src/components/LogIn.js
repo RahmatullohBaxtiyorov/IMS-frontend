@@ -1,13 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import "../css/LoginCSS.css"
 import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
 import {Utils} from "../exported/Utils";
+import {GlobalVariableContext} from "../App";
 
 const LogIn = (props) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const {user, setUser} = useContext(GlobalVariableContext);
 
     const handleChange = (event) => {
         var id = event.target.id;
@@ -32,8 +34,12 @@ const LogIn = (props) => {
             const originalString = res.data;
             const tokenIndex = originalString.indexOf("token") + "token".length + 1;  // Find the index after the word "token"
             const partAfterToken = originalString.substring(tokenIndex).trim();
+
+            let userIndex = originalString.indexOf("token");
+            let userId = originalString.substring(0, userIndex).trim();
             utils.setToken = partAfterToken;
             localStorage.setItem("TOKEN", utils.getToken);
+            setUser(userId);
             navigate("/home");
         }).catch((err) => {
             console.log(err);
