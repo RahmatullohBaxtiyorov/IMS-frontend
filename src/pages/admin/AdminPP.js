@@ -107,15 +107,15 @@ const AdminPageProduct = () => {
     };
 
 
-    const handleAddCurrency = async () => {
-        const response = await axios.post('http://localhost:8080/api/admin/currency', {name: currencyName}, {headers: {Authorization: AuthStr}});
-        if (response.data.success) {
-            setCurrencies([...currencies, response.data.currency]);
-            setCurrencyName(''); // Clear input after successful addition
-        } else {
-            // Handle error
-        }
-    };
+    // const handleAddCurrency = async () => {
+    //     const response = await axios.post('http://localhost:8080/api/admin/currency', {name: currencyName}, {headers: {Authorization: AuthStr}});
+    //     if (response.data.success) {
+    //         setCurrencies([...currencies, response.data.currency]);
+    //         setCurrencyName(''); // Clear input after successful addition
+    //     } else {
+    //         // Handle error
+    //     }
+    // };
 
     const handleAddSupplier = async () => {
         const response = await axios.post('http://localhost:8080/api/admin/supplier', {
@@ -196,6 +196,7 @@ const AdminPageProduct = () => {
                 Authorization: AuthStr, "Content-Type": "multipart/form-data"
             },
         }).then(res => {
+            setPhotoFile(null);
             console.log(res)
         }).catch(err => {
             console.log(err)
@@ -206,22 +207,22 @@ const AdminPageProduct = () => {
     return (
         <>
             <div className="forms-container">
-                <div className="form-section">
-                    <h2 className="form-header">Add currency</h2>
-                    <div className="input-wrapper">
-                        <input
-                            id="currencyInput"
-                            name="currencyName"
-                            placeholder="name"
-                            type="text"
-                            onChange={handleInputChange}
-                            className="form-input"
-                        />
-                    </div>
-                    <button className="submit-button" onClick={() => handleAddCurrency()}>
-                        Ok
-                    </button>
-                </div>
+                {/*<div className="form-section">*/}
+                {/*    <h2 className="form-header">Add currency</h2>*/}
+                {/*    <div className="input-wrapper">*/}
+                {/*        <input*/}
+                {/*            id="currencyInput"*/}
+                {/*            name="currencyName"*/}
+                {/*            placeholder="name"*/}
+                {/*            type="text"*/}
+                {/*            onChange={handleInputChange}*/}
+                {/*            className="form-input"*/}
+                {/*        />*/}
+                {/*    </div>*/}
+                {/*    <button className="submit-button" onClick={() => handleAddCurrency()}>*/}
+                {/*        Ok*/}
+                {/*    </button>*/}
+                {/*</div>*/}
 
                 <div className="form-section">
                     <h2 className="form-header">Add measurement</h2>

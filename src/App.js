@@ -4,6 +4,7 @@ import Register from "./components/Register";
 import HomePage from "./pages/HomePage";
 import {createContext, useEffect, useState} from "react";
 import AdminPP from "./pages/admin/AdminPP";
+import AdminInputPage from "./pages/admin/AdminInputPage";
 
 export const GlobalVariableContext = createContext(null);
 
@@ -25,6 +26,7 @@ function App() {
                     <Route path='/register' element={<Register/>}/>
                     <Route path='/home' element={<HomePage/>}/>
                     <Route path='/admin' element={<AdminPP/>}/>
+                    <Route path='/admin-input' element={<AdminInputPage/>}/>
                 </Routes>
 
             </Router>

@@ -29,11 +29,13 @@ input, select {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+    align-content: center;
     margin: 40px auto;
-    max-width: 800px;
+    max-width: 90vw;
 }
 
 .form-section {
+    width: 500px;
     background-color: #f5f5f5;
     padding: 20px;
     border-radius: 5px;
