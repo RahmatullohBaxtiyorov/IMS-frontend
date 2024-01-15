@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import "../css/LoginCSS.css"
 import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
@@ -13,9 +13,9 @@ const LogIn = (props) => {
 
     const handleChange = (event) => {
         var id = event.target.id;
-        if (id == "email") {
+        if (id === "email") {
             setEmail(event.target.value)
-        } else if (id == "password") {
+        } else if (id === "password") {
             setPassword(event.target.value)
         }
 

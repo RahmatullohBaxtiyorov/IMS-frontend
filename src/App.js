@@ -3,7 +3,6 @@ import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import Register from "./components/Register";
 import HomePage from "./pages/HomePage";
 import {createContext, useEffect, useState} from "react";
-import AdminPageProduct from "./pages/admin/AdminPageProduct";
 import AdminPP from "./pages/admin/AdminPP";
 
 export const GlobalVariableContext = createContext(null);

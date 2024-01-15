@@ -164,17 +164,17 @@ const AdminPageProduct = () => {
         }).catch(err => {
             console.log(err)
         });
-        // if (response) {
-        //     // Update states or perform actions based on successful product addition
-        //     setProductName('');
-        //     setProductCurrency(''); // Reset to default currency
-        //     setProductMeasurement(''); // Reset to default measurement
-        //     setProductParentCategoryId('');
-        //     setProductChildCategoryId('');
-        //     setPhotoFile(null);
-        // } else {
-        //     // Handle error
-        // }
+        if (response?.data?.size > 0) {
+            // Update states or perform actions based on successful product addition
+            setProductName('');
+            setProductCurrency(''); // Reset to default currency
+            setProductMeasurement(''); // Reset to default measurement
+            setProductParentCategoryId('');
+            setProductChildCategoryId('');
+            setPhotoFile(null);
+        } else {
+            // Handle error
+        }
     };
     const handleAddMeasurement = async () => {
         const response = await axios.post('http://localhost:8080/api/admin/measurement', {name: measurementName}, {headers: {Authorization: AuthStr}});
@@ -189,10 +189,12 @@ const AdminPageProduct = () => {
 
 
     const handleUploadPhoto = async () => {
-        await axios.post("http://localhost:8080/api/attachment/upload", photoFile, {
+        const photo = new FormData();
+        photo.append('name', photoFile);
+        await axios.post("http://localhost:8080/api/attachment/upload", photo, {
             headers: {
-                Authorization: AuthStr
-            }
+                Authorization: AuthStr, "Content-Type": "multipart/form-data"
+            },
         }).then(res => {
             console.log(res)
         }).catch(err => {
@@ -307,6 +309,7 @@ const AdminPageProduct = () => {
                     <div className="input-wrapper">
                         <select name="currency" onChange={handleInputChange} defaultValue={'uzs'}
                                 className="form-input">
+                            <option id={""} key={"index"}></option>
                             {currencies.map((value, index, array) => (
                                 <option id={value.id} key={index}>{value.name}</option>
                             ))}
@@ -315,6 +318,8 @@ const AdminPageProduct = () => {
                     <div className="input-wrapper">
                         <select name="measurement" onChange={handleInputChange} defaultValue={"kilo"}
                                 className="form-input">
+                            <option id={""} key={"index"}></option>
+
                             {measurements.map((value, index, array) => (
                                 <option id={value.id} key={index}>{value.name}</option>
                             ))}
@@ -322,6 +327,8 @@ const AdminPageProduct = () => {
                     </div>
                     <label htmlFor="child">category</label>
                     <select name="productChildCategoryId" onChange={handleInputChange} id="" className="form-input">
+                        <option id={""} key={"index"}></option>
+
                         {categories
                             .filter((category) => category.parentCategory !== null)
                             .map((value, index, array) => (
@@ -333,21 +340,21 @@ const AdminPageProduct = () => {
                     </button>
                 </div>
 
-                {/*<div className="form-section">*/}
-                {/*    <h2 className="form-header">Photo upload</h2>*/}
-                {/*    <div className="input-wrapper">*/}
-                {/*        <input*/}
-                {/*            type="file"*/}
-                {/*            accept=".jpg"*/}
-                {/*            onChange={handleInputChange}*/}
-                {/*            name="photoFile"*/}
-                {/*            className="file-input"*/}
-                {/*        />*/}
-                {/*    </div>*/}
-                {/*    <button className="submit-button" onClick={() => handleUploadPhoto()}>*/}
-                {/*        Ok*/}
-                {/*    </button>*/}
-                {/*</div>*/}
+                <div className="form-section">
+                    <h2 className="form-header">Photo upload</h2>
+                    <div className="input-wrapper">
+                        <input
+                            type="file"
+                            accept=".jpg"
+                            onChange={handleInputChange}
+                            name="photoFile"
+                            className="file-input"
+                        />
+                    </div>
+                    <button className="submit-button" onClick={() => handleUploadPhoto()}>
+                        Ok
+                    </button>
+                </div>
             </div>
         </>
     );

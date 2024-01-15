@@ -76,3 +76,58 @@ input, select {
     from { opacity: 0; }
     to { opacity: 1; }
 }
+/* Container styling */
+.container {
+    width: 350px;
+    margin: 0 auto;
+    background-color: #f5f5f5; /* Light gray background */
+    border-radius: 15px; /* Rounded corners */
+    padding: 30px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15); /* Soft shadow */
+    text-align: center;
+}
+
+/* Input fields styling */
+.container input[type="text"] {
+    width: 100%;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    font-size: 16px;
+    transition: all 0.3s ease; /* Smooth transitions */
+}
+
+.container input[type="text"]:focus {
+    border-color: #555;
+    outline: none; /* Remove default outline */
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1); /* Focus shadow */
+}
+
+/* Button styling */
+.container button {
+    background-color: #555;
+    color: #fff;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.container button:hover {
+    background-color: #444; /* Hover effect */
+}
+
+/* Link styling */
+.container a {
+    color: #333;
+    text-decoration: none;
+}
+
+/* Animation on hover */
+.container button:hover,
+.container a:hover {
+    transform: translateY(-3px); /* Subtle downward movement */
+}
