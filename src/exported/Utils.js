@@ -1,8 +1,10 @@
-export const AuthStr = 'Bearer '.concat(localStorage.getItem("TOKEN"));
-export class Utils {
-     #Token = "";
+import axios from "axios";
 
-     get getToken() {
+
+export class Utils {
+    #Token = "";
+
+    get getToken() {
         return this.#Token;
     }
 

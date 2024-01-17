@@ -1,29 +1,28 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
 
-
-const AdminInputPage = () => {
-
+const AdminOutputPage = () => {
+    const AuthStr = 'Bearer '.concat(localStorage.getItem("TOKEN"));
+    const [client, setClient] = useState({name: '', phoneNumber: ''});
+    const handleClientChange = (event) => {
+        setClient({...client, [event.target.name]: event.target.value});
+    };
     const [currencies, setCurrencies] = useState([]);
     const [products, setProducts] = useState([]);
-    const [inputs, setInputs] = useState([]);
-    const [inputProduct, setInputProduct] = useState({});
     const [currencyName, setCurrencyName] = useState('');
-    const [supplier, setSupplier] = useState({name: '', phoneNumber: ''});
-    const [suppliers, setSuppliers] = useState([]);
+    const [clients, setClients] = useState([]);
     const [warehouses, setWarehouses] = useState([]);
-    const [warehouse, setWarehouse] = useState({name: ''});
     const [warehouseI, setWarehouseI] = useState('');
     const [inputData, setInputData] = useState({
         currencyId: '',
         warehouseId: '',
-        supplierId: '',
+        clientId: '',
     });
-    const AuthStr = 'Bearer '.concat(localStorage.getItem("TOKEN"));
+    const [inputProduct, setInputProduct] = useState({});
+    const [outputs, setOutputs] = useState([]);
+
 
     useEffect(() => {
-        console.log(localStorage.getItem("role"))
-
         axios.get('http://localhost:8080/api/admin/currency', {headers: {Authorization: AuthStr}})
             .then(res => {
                 setCurrencies(res.data);
@@ -40,9 +39,9 @@ const AdminInputPage = () => {
                 console.log(err);
             });
 
-        axios.get('http://localhost:8080/api/admin/supplier', {headers: {Authorization: AuthStr}})
+        axios.get('http://localhost:8080/api/client', {headers: {Authorization: AuthStr}})
             .then(res => {
-                setSuppliers(res.data);
+                setClients(res.data);
             })
             .catch(err => {
                 console.log(err);
@@ -55,94 +54,47 @@ const AdminInputPage = () => {
             .catch(err => {
                 console.log(err);
             });
-        axios.get('http://localhost:8080/api/admin/input', {headers: {Authorization: AuthStr}})
+        axios.get('http://localhost:8080/api/admin/output', {headers: {Authorization: AuthStr}})
             .then(res => {
-                setInputs(res.data)
+                setOutputs(res.data)
             })
             .catch(err => {
                 console.log(err);
             });
     }, []);
 
-    const handleInputChange = (event) => {
-        const {name, value} = event.target;
-        console.log(name + "--" + value)
-        switch (name) {
-            case 'currencyName':
-                setCurrencyName(value);
-                break;
-            default:
-            // Handle unexpected input names
-        }
-    };
-    const handleAddCurrency = async () => {
-        if (currencyName.length > 0) {
-            await axios.post('http://localhost:8080/api/admin/currency', {name: currencyName}, {headers: {Authorization: AuthStr}})
-                .then(res => {
-                    console.log(res)
-                    setCurrencies([...currencies, res.data]);
-                    setCurrencyName(''); // Clear input after successful addition
-                }).catch(err => {
-                    console.log(err)
-                });
-        } else {
-            console.log("size error")
-        }
-    };
-
-    const handleSupplierChange = (event) => {
-        setSupplier({...supplier, [event.target.name]: event.target.value});
-    };
-
-    // Function to handle adding a new supplier
-    const handleAddSupplier = async () => {
-        await axios.post('http://localhost:8080/api/admin/supplier', supplier, {
+    const handleAddClient = async () => {
+        await axios.post('http://localhost:8080/api/client', client, {
             headers: {Authorization: AuthStr, "Content-Type": "application/json"},
         }).then(res => {
-            setSupplier({name: '', phoneNumber: ''});
-        }).catch(err => {
-            console.log(err)
-        });
-    };
-
-    const handleWarehouseChange = (event) => {
-        setWarehouse({...warehouse, [event.target.name]: event.target.value});
-    };
-
-    // Function to handle adding a new warehouse
-    const handleAddWarehouse = async () => {
-        await axios.post('http://localhost:8080/api/warehouse', warehouse, {
-            headers: {Authorization: AuthStr},
-        }).then(res => {
-            setWarehouse({name: ''});
             console.log(res)
+            setClient({name: '', phoneNumber: ''});
         }).catch(err => {
             console.log(err)
         });
     };
-
-
     const handleAddInput = async () => {
-        await axios.post('http://localhost:8080/api/admin/input', inputData, {
+        await axios.post('http://localhost:8080/api/admin/output', inputData, {
             headers: {Authorization: AuthStr},
         }).then(res => {
             setInputData({
                 currencyId: '',
                 warehouseId: '',
-                supplierId: '',
+                clientId: '',
             });
             console.log(res)
         }).catch(err => {
             console.log(err)
         });
     };
-
+    const handleInputChangeInput = (event) => {
+        setInputProduct({...inputProduct, [event.target.name]: event.target.value});
+    }
     const handleInputChangeI = (event) => {
         let b = true;
         let filter = "";
         let warehouset = "";
-        let supplier = "";
-        // setInputData({ ...inputData, [event.target.name+"Id"]: event.target.value});
+        let client = "";
         const {name, value} = event.target;
         switch (name) {
             case 'currency':
@@ -154,8 +106,8 @@ const AdminInputPage = () => {
                 setWarehouseI(warehouset)
                 console.log(warehouset)
                 break;
-            case 'supplier':
-                supplier = suppliers.filter((i) => i.name === value).map((i) => i.id).toString();
+            case 'client':
+                client = clients.filter((i) => i.name === value).map((i) => i.id).toString();
                 break;
             default:
                 b = false;
@@ -164,19 +116,13 @@ const AdminInputPage = () => {
             setInputData({
                 currencyId: currencyName,
                 warehouseId: warehouseI,
-                supplierId: supplier,
+                clientId: client,
             })
         }
 
     };
-
-    const handleInputChangeInput = (event) => {
-        setInputProduct({...inputProduct, [event.target.name]: event.target.value});
-    }
-
-
     const sendInputProduct = async () => {
-        await axios.post('http://localhost:8080/api/admin/inputproduct', inputProduct, {
+        await axios.post('http://localhost:8080/api/admin/outputproduct', inputProduct, {
             headers: {Authorization: AuthStr},
         }).then(res => {
             setInputProduct({});
@@ -184,76 +130,40 @@ const AdminInputPage = () => {
         }).catch(err => {
             console.log(err)
         });
+        console.log(inputProduct)
     };
-    return (
-        localStorage.getItem("role") === "ROLE_ADMIN" ? (<>
+
+
+    return (localStorage.getItem("role") === "ROLE_ADMIN" ? (<>
             <div className={"forms-container"}>
-
-                <div className="form-section">
-                    <h2 className="form-header">Add currency</h2>
+                <div className="form-section" style={{height: "200px"}}>
+                    <h2 className="form-header">Add client</h2>
                     <div className="input-wrapper">
                         <input
-                            id="currencyInput"
-                            name="currencyName"
-                            placeholder="name"
-                            type="text"
-                            onChange={handleInputChange}
-                            className="form-input"
-                        />
-                    </div>
-                    <button className="submit-button" onClick={() => handleAddCurrency()}>
-                        Ok
-                    </button>
-                </div>
-
-                <div className="form-section">
-                    <h2 className="form-header">Add supplier</h2>
-                    <div className="input-wrapper">
-                        <input
-                            id="supplierName"
+                            id="clientName"
                             name="name"
                             placeholder="name"
                             type="text"
-                            value={supplier.name}
-                            onChange={handleSupplierChange}
+                            value={client.name}
+                            onChange={handleClientChange}
                             className="form-input"
                         />
                         <input
-                            id="supplierPhone"
+                            id="clientPhone"
                             name="phoneNumber"
                             placeholder="phone number"
                             type="text"
-                            value={supplier.phone}
-                            onChange={handleSupplierChange}
+                            value={client.phoneNumber}
+                            onChange={handleClientChange}
                             className="form-input"
                         />
                     </div>
-                    <button className="submit-button" onClick={handleAddSupplier}>
+                    <button className="submit-button" onClick={handleAddClient}>
                         Ok
                     </button>
                 </div>
-
                 <div className="form-section">
-                    <h2 className="form-header">Add warehouse</h2>
-                    <div className="input-wrapper">
-                        <input
-                            id="warehouseName"
-                            name="name"
-                            placeholder="name"
-                            type="text"
-                            value={warehouse.name}
-                            onChange={handleWarehouseChange}
-                            className="form-input"
-                        />
-                        {/*    to bind warehouse to user we need edit user function and set user warehouseId to this id   */}
-                    </div>
-                    <button className="submit-button" onClick={handleAddWarehouse}>
-                        Ok
-                    </button>
-                </div>
-
-                <div className="form-section">
-                    <h2 className="form-header">Add Input</h2>
+                    <h2 className="form-header">Add Output</h2>
                     <div className="input-wrapper">
                         <input
                             value={"date (auto generated)"}
@@ -262,6 +172,8 @@ const AdminInputPage = () => {
                         />
                     </div>
                     <div className="input-wrapper">
+                        <h5>currency</h5>
+
                         <select name="currency" onChange={handleInputChangeI} defaultValue={''}
                                 className="form-input">
                             <option id={""} key={"index"}></option>
@@ -272,6 +184,8 @@ const AdminInputPage = () => {
                     </div>
 
                     <div className="input-wrapper">
+                        <h5>warehouse</h5>
+
                         <select name="warehouse" onChange={handleInputChangeI} defaultValue={''}
                                 className="form-input">
                             <option id={""} key={"index"}></option>
@@ -282,21 +196,22 @@ const AdminInputPage = () => {
                     </div>
 
                     <div className="input-wrapper">
-                        <select name="supplier" onChange={handleInputChangeI} defaultValue={''}
+                        <h5>client</h5>
+                        <select name="client" onChange={handleInputChangeI} defaultValue={''}
                                 className="form-input">
                             <option id={""} key={"index"}></option>
-                            {suppliers.map((value, index, array) => (
+                            {clients.map((value, index, array) => (
                                 <option id={value.id} key={index}>{value.name}</option>
+
                             ))}
                         </select>
                     </div>
 
+                    <button className="submit-button" onClick={() => {
+                        handleAddInput();
+                    }}>Ok
+                    </button>
 
-                    <button className="submit-button" onClick={() => handleAddInput()}>Ok</button>
-                </div>
-
-                <div className="form-section">
-                    <h2 className="form-header">Add Input Product</h2>
                     <div className="input-wrapper">
                         <select name="productId" onChange={handleInputChangeInput} defaultValue={''}
                                 className="form-input">
@@ -308,10 +223,10 @@ const AdminInputPage = () => {
                     </div>
 
                     <div className="input-wrapper">
-                        <select name="inputId" onChange={handleInputChangeInput} defaultValue={''}
+                        <select name="outputId" onChange={handleInputChangeInput} defaultValue={''}
                                 className="form-input">
                             <option id={""} key={"index"}></option>
-                            {inputs.map((value, index, array) => (
+                            {outputs.map((value, index, array) => (
                                 <option id={value.id} key={index} value={value.id}>{value.code}</option>
                             ))}
                         </select>
@@ -338,14 +253,14 @@ const AdminInputPage = () => {
                     </div>
 
 
-                    <button className="submit-button" onClick={() => sendInputProduct()}>Ok</button>
+                    <button className="submit-button" onClick={() => {
+                        sendInputProduct()
+                    }}>Ok
+                    </button>
                 </div>
-
-
             </div>
         </>) : ""
-
     );
 };
 
-export default AdminInputPage;
+export default AdminOutputPage;

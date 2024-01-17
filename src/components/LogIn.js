@@ -49,7 +49,9 @@ const LogIn = (props) => {
     return (<div className={"container"}>
         <input type="text" onChange={(event) => handleChange(event)} id={'email'} placeholder={"email"}/>
         <input type="text" onChange={(event) => handleChange(event)} id={'password'} placeholder={"password"}/>
-        <button onClick={(event) => login(event)}>LogIn</button>
+        <button onClick={(event) => {
+            login(event);
+        }}>LogIn</button>
         <Link to={"/register"}>
             <button>Register here</button>
         </Link>
